@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="DRSAlertDialog" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GC1-n7-kK6">
+                                <rect key="frame" x="240" y="134" width="120" height="30"/>
+                                <state key="normal" title="AlertDialogCheck"/>
+                                <connections>
+                                    <action selector="showCheck:" destination="BYZ-38-t0r" eventType="touchUpInside" id="wdH-Ru-7R3"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hNn-o6-tEb">
+                                <rect key="frame" x="243" y="239" width="114" height="30"/>
+                                <state key="normal" title="AlertDialogTable"/>
+                                <connections>
+                                    <action selector="showTable:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Ybx-mO-oRY"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W3u-Gi-NZ8">
+                                <rect key="frame" x="237" y="36" width="126" height="30"/>
+                                <state key="normal" title="AlertDialogNormal"/>
+                                <connections>
+                                    <action selector="showNormal:" destination="BYZ-38-t0r" eventType="touchUpInside" id="wIO-mx-8yi"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="hNn-o6-tEb" firstAttribute="centerX" secondItem="GC1-n7-kK6" secondAttribute="centerX" id="PAT-PA-W09"/>
+                            <constraint firstItem="W3u-Gi-NZ8" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="16" id="RfX-Eq-d8H"/>
+                            <constraint firstItem="hNn-o6-tEb" firstAttribute="top" secondItem="GC1-n7-kK6" secondAttribute="bottom" constant="75" id="SDm-Pu-Cy1"/>
+                            <constraint firstItem="GC1-n7-kK6" firstAttribute="centerX" secondItem="W3u-Gi-NZ8" secondAttribute="centerX" id="kJf-xO-I9u"/>
+                            <constraint firstItem="W3u-Gi-NZ8" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="ude-Zg-mFX"/>
+                            <constraint firstItem="GC1-n7-kK6" firstAttribute="top" secondItem="W3u-Gi-NZ8" secondAttribute="bottom" constant="68" id="umO-gM-6vE"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="339" y="363"/>
+        </scene>
+    </scenes>
+</document>
