@@ -102,8 +102,7 @@ Pod::Spec.new do |s|
   #
 
   # s.resource  = "icon.png"
-  s.resources = "DRSAlertDialog/Resources/*.png"
-
+  s.resource_bundles = {'DRSAlertDialog' => ['DRSAlertDialog/Resources/*.png']}
   # s.preserve_paths = "FilesToSave", "MoreFilesToSave"
 
 
