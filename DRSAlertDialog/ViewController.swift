@@ -30,43 +30,43 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
   
   func designContentView() {
 
-    _promptView = UIView(frame: CGRectMake(0, 0, 300, 50))
+    _promptView = UIView(frame: CGRect(x: 0, y: 0, width: 300, height: 50))
     
-    let _promptButton = UIButton(type: UIButtonType.Custom)
-    _promptButton.frame = CGRectMake(10, 0, 36, 50)
-    _promptButton.setImage(UIImage(named: "sign_noral"), forState: UIControlState.Normal)
-    _promptButton.setImage(UIImage(named: "sign_select"), forState: UIControlState.Highlighted)
-    _promptButton.setImage(UIImage(named: "sign_select"), forState: UIControlState.Selected)
+    let _promptButton = UIButton(type: UIButtonType.custom)
+    _promptButton.frame = CGRect(x: 10, y: 0, width: 36, height: 50)
+    _promptButton.setImage(UIImage(named: "sign_noral"), for: UIControlState())
+    _promptButton.setImage(UIImage(named: "sign_select"), for: UIControlState.highlighted)
+    _promptButton.setImage(UIImage(named: "sign_select"), for: UIControlState.selected)
     
-    _promptButton.addTarget(self, action: "selectButton:", forControlEvents: UIControlEvents.TouchUpInside)
+    _promptButton.addTarget(self, action: #selector(ViewController.selectButton(_:)), for: UIControlEvents.touchUpInside)
     
     _promptView!.addSubview(_promptButton)
     
-    _promptLabel = UILabel(frame: CGRectMake(50, 0, 220, 50))
+    _promptLabel = UILabel(frame: CGRect(x: 50, y: 0, width: 220, height: 50))
     
     _promptLabel.text      = "我确认，已认真阅读如上提醒！^_^";
-    _promptLabel.textColor = UIColor.redColor()
-    _promptLabel.font      = UIFont.systemFontOfSize(14)
+    _promptLabel.textColor = UIColor.red
+    _promptLabel.font      = UIFont.systemFont(ofSize: 14)
     
     _promptView!.addSubview(_promptLabel)
     
     
-    _table = UITableView(frame: CGRectMake(0, 0, 300, 300), style: UITableViewStyle.Plain)
+    _table = UITableView(frame: CGRect(x: 0, y: 0, width: 300, height: 300), style: UITableViewStyle.plain)
     _table.delegate = self
     _table.dataSource = self
     
   }
   
-  @IBAction func showNormal(sender: AnyObject) {
+  @IBAction func showNormal(_ sender: AnyObject) {
     
     // 创建alert
-    let alert = DRSAlertDialog(title: "提示", message: "卡的身份暗淡咖啡及阿尔基金安抚啊发简历到开封卡时间对伐啦拉宽带费拉开到家里阿里快速的房间里卡里的风景", messageColor: UIColor.redColor())
+    let alert = DRSAlertDialog(title: "提示", message: "卡的身份暗淡咖啡及阿尔基金安抚啊发简历到开封卡时间对伐啦拉宽带费拉开到家里阿里快速的房间里卡里的风景", messageColor: UIColor.red)
     
-    alert.addButton(ButtonType.Button_OTHER, title: "取消") { (item) -> Void in
+    alert.addButton(ButtonType.button_OTHER, title: "取消") { (item) -> Void in
       print(item.title)
     }
     
-    alert.addButton(ButtonType.Button_OTHER, title: "确定") { (item) -> Void in
+    alert.addButton(ButtonType.button_OTHER, title: "确定") { (item) -> Void in
       print(item.title)
     }
     
@@ -74,30 +74,30 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
   }
   
-  @IBAction func showCheck(sender: AnyObject) {
+  @IBAction func showCheck(_ sender: AnyObject) {
     // 使用alert
     let alert = DRSAlertDialog(title: "提示", message: "", messageColor: nil)
     alert.contentView = _promptView
-    alert.addButton(ButtonType.Button_OTHER, title: "取消") { (item) -> Void in
+    alert.addButton(ButtonType.button_OTHER, title: "取消") { (item) -> Void in
       print(item.title)
     }
     
-    alert.addButton(ButtonType.Button_OTHER, title: "确定") { (item) -> Void in
+    alert.addButton(ButtonType.button_OTHER, title: "确定") { (item) -> Void in
       print(item.title)
     }
     
     alert.show()
   }
   
-  @IBAction func showTable(sender: AnyObject) {
+  @IBAction func showTable(_ sender: AnyObject) {
     // 使用alert
     let alert = DRSAlertDialog(title: "提示", message: "", messageColor: nil)
     alert.contentView = _table
-    alert.addButton(ButtonType.Button_OTHER, title: "取消") { (item) -> Void in
+    alert.addButton(ButtonType.button_OTHER, title: "取消") { (item) -> Void in
       print(item.title)
     }
     
-    alert.addButton(ButtonType.Button_OTHER, title: "确定") { (item) -> Void in
+    alert.addButton(ButtonType.button_OTHER, title: "确定") { (item) -> Void in
       print(item.title)
     }
     
@@ -105,24 +105,24 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
   }
   
   // 自定义的视图响应事件
-  func selectButton(button:UIButton) {
-    if button.selected {
-      button.selected = false
-      self._promptLabel.textColor = UIColor.redColor()
+  func selectButton(_ button:UIButton) {
+    if button.isSelected {
+      button.isSelected = false
+      self._promptLabel.textColor = UIColor.red
     }
     else {
-      button.selected = true
-      self._promptLabel.textColor = UIColor.blackColor()
+      button.isSelected = true
+      self._promptLabel.textColor = UIColor.black
     }
   }
   
   // tableview delegate&datasource
-  func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return 50
   }
   
-  func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    let cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "ce")
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "ce")
     cell.textLabel?.text = "bit it"
     return cell
   }

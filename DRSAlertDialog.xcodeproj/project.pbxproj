@@ -121,6 +121,8 @@
 				TargetAttributes = {
 					C3D5B0921C86E9160012D64C = {
 						CreatedOnToolsVersion = 7.2.1;
+						DevelopmentTeam = R6223ZBKTR;
+						LastSwiftMigration = 0830;
 					};
 				};
 			};
@@ -277,10 +279,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = R6223ZBKTR;
 				INFOPLIST_FILE = DRSAlertDialog/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ideabinder.DRSAlertDialog;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -288,10 +292,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = R6223ZBKTR;
 				INFOPLIST_FILE = DRSAlertDialog/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ideabinder.DRSAlertDialog;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

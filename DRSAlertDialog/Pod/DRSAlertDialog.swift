@@ -15,14 +15,14 @@ let AlertPadding:CGFloat = 10
 let MenuHeight:CGFloat   = 44
 
 enum ButtonType {
-  case Button_OK, Button_CANCEL, Button_OTHER
+  case button_OK, button_CANCEL, button_OTHER
 }
 
 class DRSAlertDialogItem: NSObject {
   var title:String?
   var type:ButtonType?
   var tag:NSInteger?
-  var action:((item:DRSAlertDialogItem) -> Void)?
+  var action:((_ item:DRSAlertDialogItem) -> Void)?
 }
 
 //typealias te = (item:DRSAlertDialogItem) -> Void)
@@ -52,18 +52,18 @@ class DRSAlertDialog: UIView {
   convenience init(title:String, message:String, messageColor:UIColor?) {
     
     // 计算frame
-    var screenWidth  = UIScreen.mainScreen().bounds.size.width
-    var screenHeight = UIScreen.mainScreen().bounds.size.height
+    var screenWidth  = UIScreen.main.bounds.size.width
+    var screenHeight = UIScreen.main.bounds.size.height
     // On iOS7, screen width and height doesn't automatically follow orientation
     if floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1 {
-      let interfaceOrientation = UIApplication.sharedApplication().statusBarOrientation
+      let interfaceOrientation = UIApplication.shared.statusBarOrientation
       if UIInterfaceOrientationIsLandscape(interfaceOrientation) {
         let tmp = screenWidth
         screenWidth = screenHeight
         screenHeight = tmp
       }
     }
-    let rect = CGRectMake(0, 0, screenWidth, screenHeight)
+    let rect = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight)
     
     self.init(frame: rect)
     self.items = NSMutableArray()
@@ -79,73 +79,73 @@ class DRSAlertDialog: UIView {
   }
   
   
-  func buildViews(color:UIColor?) {
+  func buildViews(_ color:UIColor?) {
     self.coverView = UIView(frame: self.topView().bounds)
-    self.coverView?.backgroundColor = UIColor.blackColor()
+    self.coverView?.backgroundColor = UIColor.black
     self.coverView?.alpha = 0
-    self.coverView?.autoresizingMask = UIViewAutoresizing.FlexibleHeight
+    self.coverView?.autoresizingMask = UIViewAutoresizing.flexibleHeight
     self.topView().addSubview(self.coverView!)
     
-    self.alertView = UIView(frame: CGRectMake(0, 0, AlertWidth, AlertHeight))
-    self.alertView?.center = CGPointMake(self.frame.size.width/2, self.frame.size.height/2)
+    self.alertView = UIView(frame: CGRect(x: 0, y: 0, width: AlertWidth, height: AlertHeight))
+    self.alertView?.center = CGPoint(x: self.frame.size.width/2, y: self.frame.size.height/2)
     self.alertView?.layer.masksToBounds = true
     self.alertView?.layer.cornerRadius  = 5
-    self.alertView?.backgroundColor = UIColor.whiteColor()
+    self.alertView?.backgroundColor = UIColor.white
     
     self.addSubview(self.alertView!)
     
     // 设置title
-    let labelHeigh = self.heighOfRow(self.title!, font: 17, width: AlertWidth - 2 * AlertPadding)
-    self.labelTitle = UILabel(frame: CGRectMake(AlertPadding, AlertPadding, AlertWidth - 2 * AlertPadding, labelHeigh))
-    self.labelTitle?.font      = UIFont.boldSystemFontOfSize(17)
-    self.labelTitle?.textColor = UIColor.blackColor()
-    self.labelTitle?.textAlignment = NSTextAlignment.Center
+    let labelHeigh = self.heighOfRow(self.title! as NSString, font: 17, width: AlertWidth - 2 * AlertPadding)
+    self.labelTitle = UILabel(frame: CGRect(x: AlertPadding, y: AlertPadding, width: AlertWidth - 2 * AlertPadding, height: labelHeigh))
+    self.labelTitle?.font      = UIFont.boldSystemFont(ofSize: 17)
+    self.labelTitle?.textColor = UIColor.black
+    self.labelTitle?.textAlignment = NSTextAlignment.center
     self.labelTitle?.numberOfLines = 0
     self.labelTitle?.text = self.title
-    self.labelTitle?.lineBreakMode = NSLineBreakMode.ByCharWrapping
+    self.labelTitle?.lineBreakMode = NSLineBreakMode.byCharWrapping
     self.alertView?.addSubview(self.labelTitle!)
     
     // 设置message
-    let messageHeigh = self.heighOfRow(self.message!, font: 14, width: AlertWidth - 2 * AlertPadding)
-    self.labelmessage = UILabel(frame: CGRectMake(AlertPadding, self.labelTitle!.frame.origin.y + self.labelTitle!.frame.size.height, AlertWidth - 2 * AlertPadding, messageHeigh + 2 * AlertPadding))
-    self.labelmessage?.font = UIFont.systemFontOfSize(14)
+    let messageHeigh = self.heighOfRow(self.message! as NSString, font: 14, width: AlertWidth - 2 * AlertPadding)
+    self.labelmessage = UILabel(frame: CGRect(x: AlertPadding, y: self.labelTitle!.frame.origin.y + self.labelTitle!.frame.size.height, width: AlertWidth - 2 * AlertPadding, height: messageHeigh + 2 * AlertPadding))
+    self.labelmessage?.font = UIFont.systemFont(ofSize: 14)
 
-    let mesColor:UIColor = color ?? UIColor.blackColor()
+    let mesColor:UIColor = color ?? UIColor.black
     self.labelmessage?.textColor = mesColor
-    self.labelmessage?.textAlignment = NSTextAlignment.Center
+    self.labelmessage?.textAlignment = NSTextAlignment.center
     self.labelmessage?.text = self.message
     self.labelmessage?.numberOfLines = 0
-    self.labelmessage?.lineBreakMode = NSLineBreakMode.ByCharWrapping
+    self.labelmessage?.lineBreakMode = NSLineBreakMode.byCharWrapping
     self.alertView?.addSubview(self.labelmessage!)
     
-    self.contentScrollView = UIScrollView(frame: CGRectZero)
+    self.contentScrollView = UIScrollView(frame: CGRect.zero)
     self.alertView?.addSubview(self.contentScrollView!)
     
-    UIDevice.currentDevice().beginGeneratingDeviceOrientationNotifications()
-    NSNotificationCenter.defaultCenter().addObserver(self, selector: "deviceOrientationDidChange:", name: UIDeviceOrientationDidChangeNotification, object: nil)
+    UIDevice.current.beginGeneratingDeviceOrientationNotifications()
+    NotificationCenter.default.addObserver(self, selector: #selector(DRSAlertDialog.deviceOrientationDidChange(_:)), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
     
     
   }
   
   // dealloc
   deinit {
-   UIDevice.currentDevice().endGeneratingDeviceOrientationNotifications()
-    NSNotificationCenter.defaultCenter().removeObserver(self, name: UIDeviceOrientationDidChangeNotification, object: nil)
+   UIDevice.current.endGeneratingDeviceOrientationNotifications()
+    NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
   }
   
   // override func
   
   override func layoutSubviews() {
-    self.buttonScrollView?.frame = CGRectMake(0, self.alertView!.frame.size.height-MenuHeight,self.alertView!.frame.size.width, MenuHeight);
-    self.contentScrollView?.frame = CGRectMake(0, self.labelTitle!.frame.origin.y + self.labelTitle!.frame.size.height, self.alertView!.frame.size.width, self.alertView!.frame.size.height - MenuHeight);
-    self.contentView?.frame = CGRectMake(0,0,self.contentView!.frame.size.width, self.contentView!.frame.size.height);
+    self.buttonScrollView?.frame = CGRect(x: 0, y: self.alertView!.frame.size.height-MenuHeight,width: self.alertView!.frame.size.width, height: MenuHeight);
+    self.contentScrollView?.frame = CGRect(x: 0, y: self.labelTitle!.frame.origin.y + self.labelTitle!.frame.size.height, width: self.alertView!.frame.size.width, height: self.alertView!.frame.size.height - MenuHeight);
+    self.contentView?.frame = CGRect(x: 0,y: 0,width: self.contentView!.frame.size.width, height: self.contentView!.frame.size.height);
     if self.contentView != nil {
       self.contentScrollView?.contentSize = self.contentView!.frame.size;
     }
     
   }
   
-  override func willMoveToSuperview(newSuperview: UIView?) {
+  override func willMove(toSuperview newSuperview: UIView?) {
     self.addButtonItem()
     if self.contentView != nil {
       self.contentScrollView?.addSubview(self.contentView!)
@@ -156,46 +156,46 @@ class DRSAlertDialog: UIView {
   
   // show and dismiss
   func topView() -> UIView {
-    let window = UIApplication.sharedApplication().keyWindow
+    let window = UIApplication.shared.keyWindow
     return (window?.subviews[0])!
   }
   
   func show() {
-    UIView.animateWithDuration(0.5, animations: { () -> Void in
+    UIView.animate(withDuration: 0.5, animations: { () -> Void in
       self.coverView?.alpha = 0.5
-      }) { (finished) -> Void in
+      }, completion: { (finished) -> Void in
         
-    }
+    }) 
     self.topView().addSubview(self)
     self.showAnimation()
   }
   
   //------Preoperties------
-  func addButtonWithTitle(title:String) -> NSInteger {
+  func addButtonWithTitle(_ title:String) -> NSInteger {
     let item = DRSAlertDialogItem()
     item.title = title
     item.action = {(ite:DRSAlertDialogItem)->Void in
       print("no action")
     }
-    item.type = ButtonType.Button_OK
-    self.items?.addObject(item)
+    item.type = ButtonType.button_OK
+    self.items?.add(item)
     
-    return (self.items?.indexOfObject(title))!
+    return (self.items?.index(of: title))!
   }
   
-  func addButton(type:ButtonType, title:String, handler:((item:DRSAlertDialogItem) -> Void)) {
+  func addButton(_ type:ButtonType, title:String, handler:@escaping ((_ item:DRSAlertDialogItem) -> Void)) {
     let item = DRSAlertDialogItem()
     item.title = title
     item.action = handler
     item.type = type
-    self.items?.addObject(item)
+    self.items?.add(item)
     
-    item.tag = self.items?.indexOfObject(item)
+    item.tag = self.items?.index(of: item)
   }
   
   
   func addButtonItem() {
-    self.buttonScrollView = UIScrollView(frame: CGRectMake(0, self.alertView!.frame.size.height -  MenuHeight,AlertWidth, MenuHeight))
+    self.buttonScrollView = UIScrollView(frame: CGRect(x: 0, y: self.alertView!.frame.size.height -  MenuHeight,width: AlertWidth, height: MenuHeight))
     self.buttonScrollView?.bounces = false
     self.buttonScrollView?.showsHorizontalScrollIndicator = false
     self.buttonScrollView?.showsVerticalScrollIndicator = false
@@ -203,47 +203,52 @@ class DRSAlertDialog: UIView {
     if (self.buttonWidth != nil) {
       width = self.buttonWidth!
       let a = CGFloat((self.items?.count)!)
-      self.buttonScrollView?.contentSize = CGSizeMake(a * width, MenuHeight)
+      self.buttonScrollView?.contentSize = CGSize(width: a * width, height: MenuHeight)
     }
     else {
       width = (self.alertView?.frame.size.width)! / CGFloat((self.items?.count)!)
     }
-    self.items?.enumerateObjectsUsingBlock({ (item:AnyObject!, idx:Int, stop:UnsafeMutablePointer<ObjCBool>) -> Void in
-      let button = UIButton(type: UIButtonType.System)
-      button.frame = CGRectMake(CGFloat(idx) * width, 1, width, MenuHeight)
-      button.backgroundColor = UIColor.whiteColor()
-      button.layer.shadowColor = UIColor.grayColor().CGColor
+    
+    self.items?.enumerateObjects({ (item, idx, stop) in
+      let button = UIButton(type: UIButtonType.system)
+      button.frame = CGRect(x: CGFloat(idx) * width, y: 1, width: width, height: MenuHeight)
+      button.backgroundColor = UIColor.white
+      button.layer.shadowColor = UIColor.gray.cgColor
       button.layer.shadowRadius = 0.5
       button.layer.shadowOpacity = 1
-      button.layer.shadowOffset = CGSizeZero
+      button.layer.shadowOffset = CGSize.zero
       button.layer.masksToBounds = false
       button.tag = 90000 + idx
       
-      button.setTitle(item.title, forState: UIControlState.Normal)
-      button.setTitle(item.title, forState: UIControlState.Selected)
-      button.titleLabel?.font = UIFont.boldSystemFontOfSize((button.titleLabel?.font.pointSize)!)
+      let ite = item as! DRSAlertDialogItem
       
-      button.addTarget(self, action: "buttonTouched:", forControlEvents: UIControlEvents.TouchUpInside)
+      button.setTitle(ite.title, for: UIControlState())
+      button.setTitle(ite.title, for: UIControlState.selected)
+      button.titleLabel?.font = UIFont.boldSystemFont(ofSize: (button.titleLabel?.font.pointSize)!)
+      
+      button.addTarget(self, action: #selector(DRSAlertDialog.buttonTouched(_:)), for: UIControlEvents.touchUpInside)
       self.buttonScrollView?.addSubview(button)
-
+      
       // 按钮边框
       if idx != (self.items?.count)! - 1 {
-        let seprateLineVer = UIView(frame: CGRectMake(width - 1, 0, 2, MenuHeight))
-        seprateLineVer.backgroundColor = UIColor.lightGrayColor()
+        let seprateLineVer = UIView(frame: CGRect(x: width - 1, y: 0, width: 2, height: MenuHeight))
+        seprateLineVer.backgroundColor = UIColor.lightGray
         button.addSubview(seprateLineVer)
       }
       
-      let seprateLineHor = UIView(frame: CGRectMake(0, 0, self.buttonScrollView!.frame.size.width, 1))
-      seprateLineHor.backgroundColor = UIColor.lightGrayColor()
+      let seprateLineHor = UIView(frame: CGRect(x: 0, y: 0, width: self.buttonScrollView!.frame.size.width, height: 1))
+      seprateLineHor.backgroundColor = UIColor.lightGray
       self.buttonScrollView?.addSubview(seprateLineHor)
     })
+    
+    
     self.alertView?.addSubview(self.buttonScrollView!)
   }
   
-  func buttonTouched(button:UIButton) {
+  func buttonTouched(_ button:UIButton) {
     let item:DRSAlertDialogItem = self.items![button.tag - 90000] as! DRSAlertDialogItem
     if (item.action != nil) {
-      item.action!(item: item)
+      item.action!(item)
     }
     self.dismiss()
   }
@@ -259,7 +264,7 @@ class DRSAlertDialog: UIView {
     plus = max(0, plus)
     let height = min(self.screenBounds().size.height - MenuHeight, (self.alertView?.frame.size.height)! + plus)
     
-    self.alertView?.frame = CGRectMake(self.alertView!.frame.origin.x, self.alertView!.frame.origin.y, AlertWidth, height)
+    self.alertView?.frame = CGRect(x: self.alertView!.frame.origin.x, y: self.alertView!.frame.origin.y, width: AlertWidth, height: height)
     self.alertView?.center = self.center
     self.setNeedsDisplay()
     self.setNeedsLayout()
@@ -273,10 +278,10 @@ class DRSAlertDialog: UIView {
     let popAnimation = CAKeyframeAnimation(keyPath: "transform")
     popAnimation.duration = 0.4
     popAnimation.values   = [
-      NSValue.init(CATransform3D: CATransform3DMakeScale(0.01, 0.01, 1.0)),
-      NSValue.init(CATransform3D: CATransform3DMakeScale(1.1, 1.1, 1.0)),
-      NSValue.init(CATransform3D: CATransform3DMakeScale(0.9, 0.9, 1.0)),
-      NSValue.init(CATransform3D: CATransform3DIdentity)
+      NSValue.init(caTransform3D: CATransform3DMakeScale(0.01, 0.01, 1.0)),
+      NSValue.init(caTransform3D: CATransform3DMakeScale(1.1, 1.1, 1.0)),
+      NSValue.init(caTransform3D: CATransform3DMakeScale(0.9, 0.9, 1.0)),
+      NSValue.init(caTransform3D: CATransform3DIdentity)
     ]
     popAnimation.keyTimes = [0.2, 0.5, 0.75, 1.0]
     popAnimation.timingFunctions = [
@@ -284,23 +289,23 @@ class DRSAlertDialog: UIView {
       CAMediaTimingFunction.init(name: kCAMediaTimingFunctionEaseInEaseOut),
       CAMediaTimingFunction.init(name: kCAMediaTimingFunctionEaseInEaseOut)
     ]
-    self.alertView?.layer.addAnimation(popAnimation, forKey: nil)
+    self.alertView?.layer.add(popAnimation, forKey: nil)
   }
   
   func hideAnimation() {
-    UIView.animateWithDuration(0.4, animations: { () -> Void in
+    UIView.animate(withDuration: 0.4, animations: { () -> Void in
       self.coverView?.alpha = 0.0
       self.alertView?.alpha = 0.0
-      }) { (finished) -> Void in
+      }, completion: { (finished) -> Void in
         self.removeFromSuperview()
-    }
+    }) 
   }
   
 
   // handle device orientation changes
-  func deviceOrientationDidChange(notification:NSNotification) {
+  func deviceOrientationDidChange(_ notification:Notification) {
     self.frame = self.screenBounds()
-    UIView.animateWithDuration(0.2, delay: 0.0, options: UIViewAnimationOptions.TransitionNone, animations: { () -> Void in
+    UIView.animate(withDuration: 0.2, delay: 0.0, options: UIViewAnimationOptions(), animations: { () -> Void in
       self.reLayout()
       }) { (finished) -> Void in
         
@@ -311,11 +316,11 @@ class DRSAlertDialog: UIView {
   //------Tools-------
   // 计算frame
   func screenBounds() -> CGRect {
-    var screenWidth  = UIScreen.mainScreen().bounds.size.width
-    var screenHeight = UIScreen.mainScreen().bounds.size.height
+    var screenWidth  = UIScreen.main.bounds.size.width
+    var screenHeight = UIScreen.main.bounds.size.height
     // On iOS7, screen width and height doesn't automatically follow orientation
     if floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1 {
-      let interfaceOrientation = UIApplication.sharedApplication().statusBarOrientation
+      let interfaceOrientation = UIApplication.shared.statusBarOrientation
       if UIInterfaceOrientationIsLandscape(interfaceOrientation) {
         let tmp = screenWidth
         screenWidth = screenHeight
@@ -323,12 +328,12 @@ class DRSAlertDialog: UIView {
       }
     }
     
-    return CGRectMake(0, 0, screenWidth, screenHeight)
+    return CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight)
   }
   
   // 计算字符串高度
-  func heighOfRow(text:NSString, font:CGFloat, width:CGFloat) -> CGFloat {
-    let wSize:CGSize = text.boundingRectWithSize(CGSizeMake(width, 0), options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: [NSFontAttributeName : UIFont.systemFontOfSize(font)], context: nil).size
+  func heighOfRow(_ text:NSString, font:CGFloat, width:CGFloat) -> CGFloat {
+    let wSize:CGSize = text.boundingRect(with: CGSize(width: width, height: 0), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSFontAttributeName : UIFont.systemFont(ofSize: font)], context: nil).size
     
     return wSize.height;
   }
