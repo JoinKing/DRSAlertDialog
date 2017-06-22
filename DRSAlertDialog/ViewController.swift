@@ -93,11 +93,11 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     // 使用alert
     let alert = DRSAlertDialog(title: "提示", message: "", messageColor: nil)
     alert.contentView = _table
-    alert.addButton(ButtonType.button_OTHER, title: "取消") { (item) -> Void in
+    alert.addButton(ButtonType.button_CANCEL, title: "取消") { (item) -> Void in
       print(item.title)
     }
     
-    alert.addButton(ButtonType.button_OTHER, title: "确定") { (item) -> Void in
+    alert.addButton(ButtonType.button_OK, title: "确定") { (item) -> Void in
       print(item.title)
     }
     
